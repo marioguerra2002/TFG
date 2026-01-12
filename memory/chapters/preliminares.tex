@@ -1,0 +1,102 @@
+% -------------------------------------------------------------------
+% 1. CERTIFICADO DEL TUTOR
+% -------------------------------------------------------------------
+\cleardoublepageusingstyle{empty}
+\thispagestyle{empty}
+
+{
+\setlength\parindent{0pt}
+    D. \textbf{José Luis González Ávila}, profesor Titular de Universidad adscrito al Departamento de Ingeniería Informática y de Sistemas de la Universidad de La Laguna, como tutor.
+    
+    \bigskip
+    \bigskip
+    \textbf{C E R T I F I C A}
+
+    \bigskip
+    Que la presente memoria titulada:
+    
+    \bigskip
+    \begin{quote}
+    \textit{``Sistema híbrido de Predicción Electoral mediante Análisis de datos abiertos gubernamentales y opinión en Redes Sociales''}
+    \end{quote}
+    
+    \bigskip
+    \noindent ha sido realizada bajo su dirección por D. \textbf{Mario Guerra Pérez}.
+    
+    \bigskip
+    Y para que así conste, en cumplimiento de la legislación vigente y a los efectos
+    oportunos, firman la presente en La Laguna a \today.
+}
+
+% -------------------------------------------------------------------
+% 2. AGRADECIMIENTOS
+% -------------------------------------------------------------------
+\cleardoublepageusingstyle{empty}
+\thispagestyle{empty}
+
+\begin{flushright}
+    \setlength{\parindent}{0mm}
+
+    {\LARGE Agradecimientos}
+    \vspace{15mm}
+    
+    \begin{large}
+        \begin{minipage}{0.6\textwidth} % Ajustado ancho para que quepa mejor el texto
+            \begin{flushright}
+            A mi familia, por su incondicional apoyo durante estos años de estudio.
+            
+            A mi tutor, José Luis González Ávila, por su guía y paciencia en la elaboración de este trabajo.
+            
+            A mis compañeros, por hacer el camino más llevadero.
+            \end{flushright}
+        \end{minipage}
+    \end{large}
+\end{flushright}
+
+% -------------------------------------------------------------------
+% 3. LICENCIA (BY-NC-ND)
+% -------------------------------------------------------------------
+\cleardoublepageusingstyle{empty}
+\thispagestyle{empty}
+
+{\noindent\LARGE Licencia}
+\vspace{15mm}
+
+% Asegúrate de que la imagen 'by-nc-nd.eu' está en la carpeta 'images/licenses/'
+% Si la tienes suelta en images, cambia la ruta a: images/by-nc-nd.eu
+\license{images/licenses/by-nc-nd.eu}{© Esta obra está bajo una licencia de Creative Commons Reconocimiento-NoComercial-SinObraDerivada 4.0 Internacional.}
+
+% -------------------------------------------------------------------
+% 4. RESUMEN (ESPAÑOL)
+% -------------------------------------------------------------------
+\begin{abstract}
+El presente Trabajo de Fin de Grado (TFG) tiene como objetivo desarrollar un sistema de predicción electoral que integre dos fuentes de información heterogéneas: datos históricos estructurados provenientes de fuentes gubernamentales (Open Data) y datos no estructurados de opinión extraídos de redes sociales. En este contexto, se analizará el sentimiento político durante las elecciones generales de España previstas para el año 2027, utilizando como fuente primaria de opinión los mensajes en Twitter (como en Facebook).
+
+Este análisis se fundamenta en el empleo de técnicas de Procesamiento de Lenguaje Natural (PLN) para clasificar las publicaciones que los usuarios hayan realizado en función de las categorías de sentimiento principales: positivo, negativo o neutro. Un componente crítico es la detección de bots o cuentas no humanas que puedan alterar la estadística. El propósito general es determinar si existe una correlación entre el sentimiento predominante en la red social, contrastado con la base histórica, y los resultados electorales reales.
+
+Para realizar dicho análisis, la metodología abarca, por un lado, la obtención de los datasets electorales históricos y, por otro, la recolección de datos de Twitter empleando técnicas de extracción (scraping). Para el filtrado de cuentas corporativas y bots, se utilizarán heurísticas basadas en la ubicación de la cuenta y la fecha de creación del perfil. Una vez adquirida la información, se procesará para eliminar ruido, asegurando la calidad de la muestra.
+
+Finalmente, se compararán los resultados con la realidad en comparación con otros países y se estudiará la correlación entre las interacciones digitales y los mecanismos democráticos.
+
+\begin{keywords}[Palabras clave]
+Análisis de Sentimiento, Redes Sociales, Predicción Electoral, PLN, Open Data, Twitter, Detección de Bots, Polaridad Política.
+\end{keywords}
+\end{abstract}
+
+% -------------------------------------------------------------------
+% 5. ABSTRACT (INGLÉS)
+% -------------------------------------------------------------------
+\cleardoublepageusingstyle{empty}
+\thispagestyle{empty}
+
+\begin{abstract}[Abstract]
+This Bachelor's Thesis aims to develop an election prediction system integrating two heterogeneous information sources: structured historical data from government sources (Open Data) and unstructured opinion data extracted from social media. In this context, political sentiment during the upcoming Spanish general elections (2027) will be analyzed using Twitter as the primary source.
+
+The analysis relies on Natural Language Processing (NLP) techniques to classify posts based on sentiment (positive, negative, neutral) and to detect bots that might distort statistics. The goal is to determine if there is a correlation between social media sentiment, benchmarked against historical data, and actual election results.
+
+The methodology includes data collection via scraping, filtering based on geolocation and account creation date, and classification using machine learning models to quantify polarity and voting intention.
+
+\begin{keywords}
+Sentiment Analysis, Social Media, Election Prediction, NLP, Open Data, Twitter, Bot Detection, Political Polarity.
+\end{keywords}
+\end{abstract}

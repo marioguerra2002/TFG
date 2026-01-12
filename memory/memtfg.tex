@@ -1,0 +1,266 @@
+\documentclass[a4paper,12pt,oneside]{scrbook}
+\KOMAoptions{
+    chapterprefix=true,
+    parskip=half,
+    captions=tableheading,
+    draft=false
+}
+
+\usepackage{iftex}
+
+% Activar números de línea (Descomentar para borradores)
+% \usepackage{lineno}
+% \linenumbers
+% \setlength\linenumbersep{5pt}
+% \renewcommand\linenumberfont{\normalfont\tiny\sffamily\color{gray}}
+
+\usepackage[spanish,es-nolists,es-tabla,es-noindentfirst]{babel}
+\usepackage[hidelinks]{hyperref}
+
+\renewcommand{\listtablename}{Índice de tablas}    
+\renewcommand{\listfigurename}{Índice de figuras}
+\newcommand*{\listofloaname}{Índice de algoritmos}
+
+\addto\extrasspanish{
+    \renewcommand{\sectionautorefname}{Apartado}
+    \renewcommand{\subsectionautorefname}{Apartado}
+    \renewcommand{\subsubsectionautorefname}{Apartado}
+}
+
+% Márgenes del documento
+\usepackage{geometry}
+\geometry{left=2cm, right=2cm, top=2cm, bottom=3.3cm}
+
+% Configuración de fuentes
+\ifPDFTeX
+    \usepackage[T1]{fontenc}
+    \usepackage[utf8]{inputenc}
+    \usepackage{lmodern}
+    \usepackage{amsmath}
+    \usepackage{amssymb}
+    \usepackage{textcomp}
+    \usepackage[scale=0.85]{sourcecodepro}
+
+    \renewcommand{\familydefault}{\sfdefault}
+    \newcommand{\lmromanfont}{\rmfamily}
+\else % XeLaTeX / LuaLaTeX
+    \usepackage{fontspec}
+    \usepackage{amsmath}
+    \usepackage{unicode-math}   
+    
+    \setmainfont{Latin Modern Sans}[
+        Ligatures=TeX,
+        SmallCapsFont=Latin Modern Roman Caps
+    ]
+    \setsansfont{Latin Modern Sans}[Ligatures=TeX]
+    \setmonofont{Source Code Pro}[Scale=MatchLowercase]
+    \newfontfamily{\lmromanfont}{Latin Modern Roman}
+\fi
+
+% Configuración de listas no numeradas
+\setkomafont{itemizelabel}{\lmromanfont}
+\renewcommand{\labelitemii}{$\circ$}
+\renewcommand{\labelitemiii}{$\diamond$}
+\renewcommand{\labelitemiv}{$\triangleright$}
+
+% Citas
+\usepackage{csquotes}
+\renewcommand{\mkbegdispquote}[2]{«}
+\renewcommand{\mkenddispquote}[2]{#1»#2}
+
+%% Bibliografía
+\usepackage[style=numeric-comp,sorting=none,backend=biber]{biblatex}
+\defbibnote{note}{Las siguientes referencias bibliográficas se presentan en orden de aparición en el texto.\par\bigskip}
+
+\addbibresource{referencias.bib}
+
+% Paquetes adicionales
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{lipsum}
+\usepackage{microtype}
+\usepackage{pdflscape}
+\usepackage{rotating}
+\usepackage{subcaption}
+\usepackage[table]{xcolor}
+\usepackage{siunitx}
+
+% --- IMPORTANTE: RUTA DE IMÁGENES ---
+\graphicspath{ {../images/} }
+
+\ifPDFTeX
+    \newcommand{\perthousand}{\textperthousand}
+\else
+    \newcommand{\perthousand}{‰}
+\fi
+
+% Tablas
+\usepackage{array} 
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{tabularx}
+\newcolumntype{R}{>{\raggedleft\arraybackslash}X}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\newcolumntype{M}{>{$}c<{$}}
+\newcolumntype{L}{>{$}l<{$}}
+\newcolumntype{N}{>{$}r<{$}}
+\renewcommand*{\arraystretch}{1.5}
+
+% Código con coloreado de sintaxis
+\usepackage{scrhack}            
+\usepackage{listings}
+\renewcommand{\lstlistingname}{Listado}
+\lstset{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    columns=fullflexible,
+    keepspaces=true,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red}
+}
+
+% Descripción de algoritmos en pseudocódigo
+\usepackage[chapter]{algorithm}
+\usepackage{algpseudocodex}
+\floatname{algorithm}{Algoritmo}
+\captionsetup[algorithm]{labelfont=bf, labelsep=default}
+
+% Entornos personalizados
+\newenvironment{abstract}[1][\abstractname]{
+    \cleardoublepageusingstyle{empty}
+    \thispagestyle{empty}
+    \begin{center}\textbf{#1}\end{center}
+    \begin{itshape}\par\noindent%
+}
+{\end{itshape}}
+
+\newenvironment{keywords}[1][Keywords]
+{\vspace{7pt}\par\noindent\textup{\textbf{#1: }}\begin{upshape}}
+{\end{upshape}}
+
+\newcommand{\license}[2]{%
+\begin{center}
+    \begin{minipage}{0.8\textwidth}   
+        \begin{center}
+            \includegraphics[width=4.66cm]{#1}\\[12pt]
+            {\Large #2}
+        \end{center}
+    \end{minipage}
+\end{center}
+}
+
+% Formato de capítulos
+\renewcommand*{\chapterformat}{%
+    \mbox{\chapappifchapterprefix{\nobreakspace}\thechapter
+    \IfUsePrefixLine{}{\enskip}}}
+\renewcommand{\chapterheadmidvskip}{\vskip 0pt}
+\renewcommand*{\figureformat}{\figurename~\thefigure}
+\renewcommand*{\tableformat}{\tablename~\thetable}
+
+\let\originaladdchaptertocentry\addchaptertocentry
+\renewcommand*{\addchaptertocentry}[2]{%
+  \IfArgIsEmpty{#1}{%
+    \originaladdchaptertocentry{#1}{#2}%
+  }{%
+    \originaladdchaptertocentry{}{\chapapp~#1\autodot\space#2}%
+  }%
+}
+
+\begin{document}   
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PORTADA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Metadatos del PDF
+\hypersetup{
+    pdftitle={Sistema híbrido de Predicción Electoral mediante Análisis de datos abiertos gubernamentales y opinión en Redes Sociales},
+    pdfauthor={Mario Guerra Pérez},
+    pdfsubject={Trabajo de Fin de Grado},
+}
+
+\pagestyle{empty}
+\newcommand{\HRule}{\rule{\linewidth}{0.3mm}}
+{
+    \setlength{\parindent}{0mm}
+    \setlength{\parskip}{0mm}
+    
+    \vspace*{1.20cm}
+    \includegraphics[width=9.81cm]{../images/logos/escuela-ingenieria-tecnologia-original} 
+    \vspace*{\stretch{0.9}}
+    
+    {\centering
+    \fontsize{32pt}{32pt}\selectfont Trabajo de Fin de Grado\\[10pt]
+    \fontsize{20pt}{20pt}\selectfont Grado en Ingeniería Informática\par}
+    \HRule\vspace*{-2mm}
+    \begin{flushright}
+        {\fontsize{26pt}{26pt}\selectfont Sistema híbrido de Predicción Electoral mediante Análisis de datos abiertos gubernamentales y opinión en Redes Sociales\par
+        \vspace*{3mm}
+        \fontsize{18pt}{18pt}\selectfont \textit{Hybrid Election Prediction System using Analysis of Open Government Data and Social Media Opinion}\par
+        \vspace*{11mm}
+        \fontsize{16pt}{16pt}\selectfont Mario Guerra Pérez
+        }\vspace*{12mm}
+    \end{flushright}
+    \HRule
+    
+    \vspace*{\stretch{1}}
+    \begin{center}
+        \fontsize{18pt}{18pt}\selectfont La Laguna, \today
+    \end{center}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PRELIMINARES (Certificado, Agradecimientos, Licencia, Resumen)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frontmatter
+
+% AQUÍ ES DONDE CARGAMOS EL OTRO ARCHIVO
+% Y YA NO PONEMOS NADA MÁS DEBAJO HASTA EL ÍNDICE
+\input{chapters/preliminares}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ÍNDICES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{plain}
+\cleardoublepage
+\setcounter{page}{1} 
+
+\tableofcontents
+\listoffigures
+\listoftables
+%\listofalgorithms
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CONTENIDOS (CAPÍTULOS)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mainmatter
+
+% NOTA: Asegúrate de que estos archivos .tex están dentro de la carpeta "chapters/"
+\input{chapters/01-introducción}
+\input{chapters/02-capítulo2}
+\input{chapters/03-capítulo3}
+\input{chapters/04-capítulo4}
+\input{chapters/05-conclusiones}
+\input{chapters/06-conclusions}
+\input{chapters/07-presupuesto}
+
+\appendix
+
+% APÉNDICES
+\input{chapters/0A-apéndice1}
+\input{chapters/0B-apéndice2}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% BIBLIOGRAFÍA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\backmatter
+
+\printbibliography[prenote=note]
+
+\end{document}

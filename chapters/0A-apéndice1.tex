@@ -1,0 +1,90 @@
+\chapter{Título del Apéndice 1}
+\label{ch:apendice-uno}
+
+\section{Algoritmo XXX}
+\label{sec:algoritmo-xxx}
+
+Ejemplo de código con coloreado de sintaxis:
+
+\begin{lstlisting}[language=C++]
+#include <iostream>
+
+int main()
+{
+  // Imprime "Hello, world!" en la consola
+  std::cout << "Hello, world!\n";
+  return 0;
+}
+\end{lstlisting}
+
+\section{Archivo XXY}
+\label{sec:archivo-xxy}
+
+Ejemplo de JSON usando el mismo entorno de coloreado de sintaxis:
+
+\begin{lstlisting}[language=json]
+{
+    "nombre": "John Doe",
+    "edad": 30,
+    "ciudad": "Nueva York",
+    "hobbies": [
+        "lectura",
+        "jardinería",
+        "ciclismo"
+    ],
+    "empleo": {
+        "título": "Ingeniero de Software",
+        "empresa": "TechCorp"
+    }
+}
+\end{lstlisting}
+ 
+\section{Algoritmo YYY}
+\label{sec:algoritmo-yyy}
+
+Este es el clásico entorno \texttt{verbatim}, sin coloreado pero con fuente monoespaciada:
+
+\begin{center}
+\begin{footnotesize}
+\begin{verbatim}
+
+/***********************************************************************************
+ *
+ * Fichero .h
+ *
+ ***********************************************************************************
+ *
+ * AUTORES
+ *
+ * FECHA
+ *
+ * DESCRIPCION
+ *
+ *
+ ************************************************************************************/
+ 
+\end{verbatim}
+\end{footnotesize}
+\end{center}
+
+\section{Algoritmo ZZZ}
+\label{sec:algoritmo-zzz}
+
+Ejemplo de entorno para describir algoritmos en pseudocódigo:
+
+\begin{algorithm}[htpb]
+    \caption{Cálculo del factorial de un número}\label{alg:factorial}
+    \begin{algorithmic}[1]
+        \State \textbf{Entrada:} Un entero $n$
+        \State \textbf{Salida:} El factorial de $n$
+        \Function{Factorial}{$n$}\Comment{El factorial de n}
+            \If{$n \leq 1$}
+                \State \Return $1$\Comment{El factorial de 0 o 1 es 1}
+            \Else
+                \State \Return $n \times$ \Call{Factorial}{n-1}
+            \EndIf
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
+Otra forma de describir algoritmos es utilizar entornos \texttt{lstlisting} y emplear una sintaxis de pseudocódigo similar a alguno de los lenguajes soportados por este paquete, como Python o Pascal.

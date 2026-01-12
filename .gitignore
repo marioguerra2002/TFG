@@ -4,4 +4,4 @@ data/
 models/ 
 drivers/
 .env
-.pkl
+*.pkl

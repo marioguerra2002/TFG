@@ -143,8 +143,12 @@ import pandas as pd
 import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
 
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from urllib.parse import quote_plus # para URL encoding
+
 #SEARCH_QUERY = "elecciones españa 2027 lang:es -filter:retweets"
-MAX_TWEETS = 1000000000000
+MAX_TWEETS = 5000
 
 def initialize_driver():
   options = uc.ChromeOptions()
@@ -182,12 +186,55 @@ def load_cookies(driver):
     print(f"Error al cargar cookies: {e}")
     return False
   
+def wait_for_results_or_retry(driver, timeout=15, max_retries=3):
+  for attempt in range(max_retries):
+    time.sleep(2)
+
+    # Si aparece el mensaje de error
+    error_nodes = driver.find_elements(By.XPATH, "//*[contains(text(),'Something went wrong')]")
+    if error_nodes:
+      print(f"[X] Error de carga (attempt {attempt+1}/{max_retries}). Pulsando Retry/refresh...")
+
+      # Intenta click en Retry si existe
+      retry_btn = driver.find_elements(By.XPATH, "//div[@role='button']//span[text()='Retry']/ancestor::div[@role='button']")
+      if retry_btn:
+        try:
+          retry_btn[0].click()
+        except:
+          driver.refresh()
+      else:
+        driver.refresh()
+
+      time.sleep(5)
+      continue
+
+    # Si ya hay tweets, sal
+    tweets = driver.find_elements(By.XPATH, "//article[@data-testid='tweet']")
+    if tweets:
+      return True
+
+  return False
+
+  
 def extract_tweets(driver, search_query):
   print(f"Looking for: {search_query}")
-  query_url = search_query.replace(" ", "%20") # el %20 es espacio en URL encoding
+  query_url = quote_plus(search_query) # el %20 es espacio en URL encoding
   
-  driver.get(f"https://x.com/search?q={query_url}&src=typed_query&f=live")
-  time.sleep(5) # Esperar a que la página cargue
+  driver.get(f"https://x.com/search?q={query_url}&src=typed_query&f=top")
+  if not wait_for_results_or_retry(driver, timeout=15, max_retries=3):
+    print("No se pudieron cargar los resultados de búsqueda tras varios intentos.")
+    return pd.DataFrame([]) # Si no carga, devolver DataFrame vacío
+  try:
+    WebDriverWait(driver, 15).until(
+      EC.presence_of_element_located((By.XPATH, '//article[@data-testid="tweet"]'))
+    )
+    print("Search results loaded.")
+  except:
+    driver.refresh()
+    time.sleep(5)
+    return pd.DataFrame([]) # Si no carga, devolver DataFrame vacío
+    
+  
   tweets_data = []
   tweets_ids = set()
   last_height = driver.execute_script("return document.body.scrollHeight") # Altura inicial de la página
@@ -234,12 +281,44 @@ if __name__ == "__main__":
   driver = initialize_driver()
   # array de palabras para en cada iteracion, hacer una busqueda diferente y que no sea siempre la misma
   #SEARCH_QUERIES = ["elecciones españa 2027 lang:es -filter:retweets", "política españa 2027 lang:es -filter:retweets", "gobierno españa 2027 lang:es -filter:retweets", "españa 2027 lang:es -filter:retweets", "perro xanche lang:es -filter:retweets"]
-  SEARCH_QUERIES = ["política españa 2027 lang:es -filter:retweets", "perro xanche lang:es -filter:retweets"]
+  SEARCH_QUERIES = [
+    # Elecciones / marco general
+    '(elecciones OR "elecciones generales" OR "elecciones 2027" OR "campaña electoral") lang:es -filter:retweets',
+    '(votar OR voto OR "jornada electoral" OR "debate electoral") lang:es -filter:retweets',
+
+    # Partidos y líderes (bloques cortos)
+    '(PSOE OR "Partido Socialista" OR "Pedro Sánchez") lang:es -filter:retweets',
+    '(PP OR "Partido Popular" OR Feijóo OR "Núñez Feijóo") lang:es -filter:retweets',
+    '(VOX OR Abascal OR "Santiago Abascal") lang:es -filter:retweets',
+    '(Sumar OR "Yolanda Díaz") lang:es -filter:retweets',
+    '(Podemos OR "Ione Belarra" OR "Irene Montero") lang:es -filter:retweets',
+    '(ERC OR Junts OR PNV OR Bildu) lang:es -filter:retweets',
+
+    # Intención de voto (muy importante)
+    '("voy a votar" OR "votaré a" OR "mi voto" OR "no pienso votar") lang:es -filter:retweets',
+    '("cambiaré mi voto" OR "esta vez votaré" OR "mi voto será" OR "mi voto va para") lang:es -filter:retweets',
+
+    # Issues (divididos por tema)
+    '(inflación OR "salario mínimo" OR "coste de la vida") lang:es -filter:retweets',
+    '(hipoteca OR alquiler OR vivienda OR "ley de vivienda") lang:es -filter:retweets',
+    '(paro OR desempleo OR "reforma laboral" OR "contrato indefinido") lang:es -filter:retweets',
+    '(inmigración OR fronteras OR menas OR "regularización") lang:es -filter:retweets',
+    '(amnistía OR Cataluña OR independencia OR referéndum) lang:es -filter:retweets',
+    '(corrupción OR "caso" OR escándalo OR dimisión) lang:es -filter:retweets',
+
+    # Hashtags generales
+    '(#Elecciones OR #EleccionesGenerales OR #España OR #Política) lang:es -filter:retweets',
+    '(#PSOE OR #PP OR #VOX OR #Sumar OR #Podemos) lang:es -filter:retweets',
+
+    # Polarización / emoción (para sentimiento)
+    '("estoy harto" OR "estoy harta" OR "es una vergüenza" OR indignante) lang:es -filter:retweets',
+  ]
+
   try:
     if load_cookies(driver):
       for number_doc in range(SEARCH_QUERIES.__len__()):
         print("Extracting tweets...")
-        df_tweets = extract_tweets(driver, SEARCH_QUERIES[number_doc - 1])
+        df_tweets = extract_tweets(driver, SEARCH_QUERIES[number_doc])
         
         import os
         os.makedirs("data/raw/social_media", exist_ok=True)

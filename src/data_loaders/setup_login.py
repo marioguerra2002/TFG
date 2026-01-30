@@ -7,7 +7,8 @@ def guardar_cookies():
     
     # Esta librería se encarga sola de buscar tu Chrome y parchearlo
     # No necesitamos configurar rutas ni puertos raros.
-    driver = uc.Chrome(use_subprocess=True)
+    # version_main=144 asegura compatibilidad con tu versión de Chrome
+    driver = uc.Chrome(use_subprocess=True, version_main=144)
     
     try:
         driver.get("https://x.com/i/flow/login")

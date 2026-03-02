@@ -38,3 +38,4 @@ df['text'] = df['text'].apply(replace_unicode_characters)
 df.to_csv(file, index=False, encoding='utf-8')
 print(f"File saved: {file} with {len(df)} rows.")
 print("Unicode character replacement completed.")
+

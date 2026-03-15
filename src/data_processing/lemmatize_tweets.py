@@ -1,10 +1,10 @@
 import os
 import re
 import spacy #
-import pandas as pd
+import pandas as pd 
 
 INPUT_FILE = "data/processed/merged_social_media_es.csv"
-OUTPUT_FILE = "data/processed/lemmatized_tweets.csv"
+OUTPUT_FILE = "data/processed/lemmatized_tweets_lg.csv"
 
 
 TEXT_COL = "text"
@@ -73,7 +73,7 @@ def main():
 
   # Charge spacy
 
-  nlp = spacy.load("es_core_news_md", disable=["ner"])
+  nlp = spacy.load("es_core_news_lg", disable=["ner"])
   # Load the Spanish language model, disabling the named entity recognition component for faster processing
   nlp.max_length = 2000000 # Increase the maximum document length to handle long tweets
 

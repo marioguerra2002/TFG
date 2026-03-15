@@ -1,6 +1,30 @@
 # TFG
 
-## Installation
+## ⚡ Quick Start
+
+### 1. Navigate to the correct directory
+```bash
+# You must be in the Code directory
+cd TFG/Code
+```
+
+### 2. Activate the virtual environment
+```bash
+# macOS/Linux
+source env/bin/activate
+
+# Windows
+env\Scripts\activate
+```
+
+### 3. Run your scripts
+```bash
+python src/your_script.py
+```
+
+---
+
+## Installation (First Time Setup)
 
 ### 1. Clone the repository
 ```bash
@@ -11,7 +35,7 @@ cd TFG/Code
 ### 2. Create and activate virtual environment (Python 3.13 recommended)
 ```bash
 # Create virtual environment
-python3.13 -m venv env
+python3 -m venv env --upgrade-deps
 
 # Activate on macOS/Linux
 source env/bin/activate
@@ -48,15 +72,18 @@ pip list
 
 ## Usage
 
+### Important: Always use the correct directory
+```bash
+# Navigate to the Code subdirectory
+cd TFG/Code
+```
+
 ### Activate Environment
 ```bash
-# Navigate to Code directory
-cd Code
-
-# Activate environment on macOS/Linux
+# macOS/Linux
 source env/bin/activate
 
-# Or on Windows
+# Windows
 env\Scripts\activate
 ```
 
@@ -67,7 +94,7 @@ deactivate
 
 ### Run Python Scripts
 ```bash
-# With environment activated
+# After activating (recommended)
 python src/your_script.py
 
 # Or directly without activating

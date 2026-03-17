@@ -105,6 +105,9 @@ python src/your_script.py
 
 ### Built-in Python Modules
 - `os` - Operating system interface
+- `re` - Regular expressions for text matching
+- `unicodedata` - Unicode normalization (accent removal and text normalization)
+- `collections` (`Counter`) - Counting keyword matches for diagnostics
 - `time` - Time access and conversions
 - `pickle` - Python object serialization
 - `random` - Random number generation
@@ -116,6 +119,8 @@ python src/your_script.py
 #### Data Science & Analysis
 - **pandas** (>=2.0.0) - Data manipulation and analysis
 - **numpy** (>=1.24.0) - Numerical computing (dependency of pandas/spacy)
+
+Note: The `party_detection.py` updates do not introduce new external pip dependencies.
 
 #### Web Scraping & Automation
 - **selenium** (>=4.0.0) - Browser automation framework

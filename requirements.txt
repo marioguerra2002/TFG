@@ -1,6 +1,8 @@
 # Core Data Science Libraries
 pandas>=2.0.0
 numpy>=1.24.0
+matplotlib
+seaborn
 
 # Web Scraping and Automation
 selenium>=4.0.0
@@ -9,6 +11,11 @@ undetected-chromedriver>=3.5.0
 # Natural Language Processing
 langid>=1.1.6
 spacy>=3.8.0
+pysentimiento
+
+# Deep Learning
+torch
+
 
 # Utilities
 tqdm>=4.65.0

@@ -1,25 +1,62 @@
-
 import re
 import unicodedata
 from collections import Counter
+from pathlib import Path
 import pandas as pd
+# importar detector de hired keywords para diagnóstico
+
 
 INPUT_FILE = "data/processed/lemmatized_tweets_lg_no_stopwords.csv"
-OUTPUT_FILE = "data/processed/lemmatized_tweets_lg_no_stopwords_party_detection.csv"
+OUTPUT_FILE = "data/processed/lemmatized_tweets_lg_no_stopwords_party_detectionv2.csv"
 RUN_DIAGNOSTICS = True
 
 # Diccionario actualizado 2026/2027
 DICTIONARY_FILE = {
-    "PP": ["pp", "partido popular", "feijoo", "ayuso", "tellado", "cuca gamarra", "juanma moreno", "aznar", "rajoy", "genova"],
-    "PSOE": ["psoe", "partido socialista", "sanchez", "pedro sanchez", "zapatero", "illa", "salvador illa", "montero", "ferraz", "sanchismo"],
-    "VOX": ["vox", "abascal", "santiago abascal", "buxade", "garriga", "bambu"],
-    "SUMAR": ["sumar", "yolanda diaz", "urtasun", "monica garcia"],
-    "PODEMOS": ["podemos", "unidas podemos", "belarra", "ione belarra", "irene montero"],
-    "SALF": ["salf", "se acabo la fiesta", "alvise", "alvise perez"],
-    "ERC": ["esquerra republicana", "erc", "rufian", "gabriel rufian", "junqueras"],
-    "JUNTS": ["junts", "junts per catalunya", "puigdemont", "carles puigdemont"],
-    "PNV": ["partido nacionalista vasco", "pnv", "andoni ortuzar", "ortuzar", "pradales"],
-    "BILDU": ["eh bildu", "bildu", "otegi", "arnaldo otegi", "aizpurua"]
+    "PP": [
+        "pp", "partido popular", "feijoo", "ayuso", "isabel diaz ayuso",
+        "tellado", "miguel tellado", "cuca gamarra", "juanma moreno", "moreno bonilla",
+        "aznar", "rajoy", "genova", "almeida", "mazon", "carlos mazon", "bendodo",
+        "borja semper", "peperos", "frijoo", "frijolito", "gaviota", "perro xanche"
+    ],
+    "PSOE": [
+        "psoe", "partido socialista", "sanchez", "pedro sanchez", "zapatero",
+        "illa", "salvador illa", "montero", "maria jesus montero", "ferraz",
+        "sanchismo", "sanchista", "oscar puente", "marlaska", "pilar alegria",
+        "page", "emiliano garcia page", "psoez", "falconetti", "perro sanxe",
+        "perro sanchez", "koldo", "tito berni", "abalos", "begoña gomez", "psoe_a"
+    ],
+    "VOX": [
+        "vox", "abascal", "santiago abascal", "buxade", "garriga", "ortega smith",
+        "bambu", "pepa millan", "monasterio", "rocio monasterio", "voxeros",
+        "pagascal", "fachascal"
+    ],
+    "SUMAR": [
+        "sumar", "yolanda diaz", "urtasun", "monica garcia", "errejon",
+        "iñigo errejon", "tucan", "falsa", "chulisima", "magis"
+    ],
+    "PODEMOS": [
+        "podemos", "unidas podemos", "belarra", "ione belarra", "irene montero",
+        "pablo iglesias", "monedero", "echechenique", "pam", "marqueses de galapagar",
+        "morados", "mugremos", "pudimos"
+    ],
+    "SALF": [
+        "salf", "se acabo la fiesta", "alvise", "alvise perez", "ardillas", "las ardillas"
+    ],
+    "ERC": [
+        "esquerra republicana", "erc", "esquerra", "rufian", "gabriel rufian",
+        "junqueras", "pere aragones", "marta rovira"
+    ],
+    "JUNTS": [
+        "junts", "junts per catalunya", "puigdemont", "carles puigdemont",
+        "turull", "nogueras", "miriam nogueras", "laura borras", "fregona"
+    ],
+    "PNV": [
+        "partido nacionalista vasco", "pnv", "andoni ortuzar", "ortuzar",
+        "pradales", "aitor esteban", "urkullu", "sabinetxea"
+    ],
+    "BILDU": [
+        "eh bildu", "bildu", "otegi", "arnaldo otegi", "aizpurua", "txapote"
+    ]
 }
 
 def normalize_text(text):
@@ -63,6 +100,7 @@ def get_mentioned_parties(text): # esto es lo que se aplica a cada tweet para ex
 
     return mentioned
 
+
 def analyze_dictionary(df, keyword_hits_counter):
     print("\n" + "="*50)
     print("--- DIAGNÓSTICO DE DETECCIÓN DE PARTIDOS ---")
@@ -71,6 +109,8 @@ def analyze_dictionary(df, keyword_hits_counter):
     for (party, keyword), hits in keyword_hits_counter.most_common(20):
         print(f"  - [{party}] '{keyword}': {hits} aciertos")
     print("="*50 + "\n")
+
+
 
 def main():
     df = pd.read_csv(INPUT_FILE, encoding="utf-8")
